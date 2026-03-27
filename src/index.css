@@ -1,0 +1,290 @@
+@import "tailwindcss";
+
+/* ===== Design Tokens ===== */
+@theme {
+  /* Primary Blues */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+
+  /* Accent Colors */
+  --color-accent-orange: #f97316;
+  --color-accent-green: #10b981;
+  --color-accent-purple: #8b5cf6;
+  --color-accent-pink: #ec4899;
+  --color-accent-teal: #14b8a6;
+  --color-accent-amber: #f59e0b;
+
+  /* Neutrals */
+  --color-neutral-50: #f8fafc;
+  --color-neutral-100: #f1f5f9;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-300: #cbd5e1;
+  --color-neutral-400: #94a3b8;
+  --color-neutral-500: #64748b;
+  --color-neutral-600: #475569;
+  --color-neutral-700: #334155;
+  --color-neutral-800: #1e293b;
+  --color-neutral-900: #0f172a;
+
+  /* Typography */
+  --font-family-heading: 'Noto Sans TC', 'Inter', sans-serif;
+  --font-family-body: 'Noto Sans TC', 'Inter', sans-serif;
+}
+
+/* ===== Global Reset ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: var(--font-family-body);
+  background-color: #ffffff;
+  color: var(--color-neutral-800);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.7;
+}
+
+/* ===== Section Styling ===== */
+.section-padding {
+  padding: 4rem 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding: 6rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 7rem 2rem;
+  }
+}
+
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===== Gradient Backgrounds ===== */
+.bg-hero-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 40%, #60a5fa 100%);
+}
+
+.bg-blue-gradient {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #3b82f6 100%);
+}
+
+.bg-light-gradient {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.bg-subtle-blue {
+  background: linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%);
+}
+
+/* ===== Card Styles ===== */
+.card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  /* Hardware Acceleration for perfectly smooth scrolling without repaints */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, box-shadow;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+
+.card-bordered {
+  background: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid var(--color-neutral-200);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  /* Hardware Acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, box-shadow, border-color;
+}
+
+.card-bordered:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(37, 99, 235, 0.1);
+  border-color: var(--color-primary-300);
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: #ffffff;
+  color: var(--color-primary-600);
+  font-weight: 600;
+  border: 2px solid var(--color-primary-400);
+  border-radius: 9999px;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  background: var(--color-primary-50);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== Section Heading ===== */
+.section-heading {
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.section-subheading {
+  color: var(--color-neutral-500);
+  font-size: 1.125rem;
+  line-height: 1.8;
+  max-width: 700px;
+  margin: 1rem auto 0;
+}
+
+/* ===== Number Badge (for curriculum cards) ===== */
+.number-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+/* ===== Curriculum List Item ===== */
+.curriculum-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  font-size: 0.9375rem;
+  color: var(--color-neutral-700);
+}
+
+.curriculum-item::before {
+  content: '';
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-primary-400);
+  flex-shrink: 0;
+}
+
+/* ===== Feature Icon ===== */
+.feature-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* ===== Custom Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: rgba(37, 99, 235, 0.2);
+  color: #1e293b;
+}
+
+/* ===== Animate on scroll fade-up ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Responsive Container ===== */
+.container-narrow {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.container-wide {
+  max-width: 1400px;
+  margin: 0 auto;
+}
