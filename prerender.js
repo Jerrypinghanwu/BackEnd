@@ -16,7 +16,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   const page = await browser.newPage();
-  await page.goto('http://127.0.0.1:4173/BackEnd/', { waitUntil: 'networkidle0' });
+  await page.goto('http://127.0.0.1:4173/BackEnd/', { waitUntil: 'domcontentloaded', timeout: 30000 });
+  
+  // Give React 2 seconds to completely hydrate and run animations
+  await new Promise(r => setTimeout(r, 2000));
   
   let html = await page.content();
   // CRITICAL FIX: Puppeteer serializes absolute DOM paths for img src
