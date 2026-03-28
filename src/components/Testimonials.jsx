@@ -45,7 +45,7 @@ function AnimatedStat({ numericValue, suffix, label, delay, isInView }) {
       className={`fade-up-sm ${isInView ? 'in-view' : ''}`}
       style={{ textAlign: 'center', minWidth: 140, transitionDelay: `${delay / 1000}s` }}
     >
-      <div style={{ fontSize: 42, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>
+      <div style={{ fontSize: 'clamp(32px, 8vw, 42px)', fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>
         {displayValue}{suffix}
       </div>
       <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', marginTop: 10 }}>
@@ -100,7 +100,7 @@ export default function Testimonials() {
   return (
     <section id="testimonials" style={{
       background: 'linear-gradient(180deg, #fff 0%, #eff6ff 50%, #fff 100%)',
-      padding: '100px 24px',
+      padding: 'clamp(60px, 10vw, 100px) clamp(16px, 4vw, 24px)',
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
@@ -216,13 +216,14 @@ export default function Testimonials() {
         {/* Bottom stats — animated counting */}
         <div
           ref={statsRef}
+          className="stats-bar"
           style={{
             display: 'flex', flexWrap: 'wrap',
-            justifyContent: 'center', gap: 48,
-            marginTop: 80,
-            padding: '52px 32px',
+            justifyContent: 'center', gap: 'clamp(24px, 5vw, 48px)',
+            marginTop: 'clamp(48px, 8vw, 80px)',
+            padding: 'clamp(36px, 6vw, 52px) clamp(20px, 4vw, 32px)',
             background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-            borderRadius: 24,
+            borderRadius: 'clamp(16px, 3vw, 24px)',
             boxShadow: '0 8px 40px rgba(37,99,235,0.25)',
           }}
         >

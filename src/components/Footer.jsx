@@ -29,7 +29,7 @@ export default function Footer() {
     <footer style={{
       background: '#0f172a',
       color: '#94a3b8',
-      padding: '80px 24px 40px',
+      padding: 'clamp(48px, 8vw, 80px) clamp(16px, 4vw, 24px) 40px',
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Main grid */}

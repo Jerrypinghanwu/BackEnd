@@ -62,10 +62,10 @@ export default function HeroBanner() {
       <div style={{
         background: 'linear-gradient(135deg, #1e40af 0%, #2563eb 30%, #3b82f6 60%, #60a5fa 100%)',
         position: 'relative',
-        paddingTop: 200,
-        paddingBottom: 140,
-        paddingLeft: 24,
-        paddingRight: 24,
+        paddingTop: 'clamp(120px, 20vw, 200px)',
+        paddingBottom: 'clamp(80px, 14vw, 140px)',
+        paddingLeft: 'clamp(16px, 4vw, 24px)',
+        paddingRight: 'clamp(16px, 4vw, 24px)',
       }}>
 
         {/* Animated gradient overlay — pure CSS */}

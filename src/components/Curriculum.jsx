@@ -56,7 +56,7 @@ export default function Curriculum() {
       {/* Blue gradient banner */}
       <div style={{
         background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #3b82f6 100%)',
-        padding: '80px 24px',
+        padding: 'clamp(48px, 8vw, 80px) clamp(16px, 4vw, 24px)',
       }}>
         <div
           ref={titleRef}

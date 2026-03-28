@@ -62,7 +62,7 @@ export default function Header() {
         <div style={{
           maxWidth: '1200px',
           margin: '0 auto',
-          padding: '0 24px',
+          padding: '0 clamp(16px, 4vw, 24px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -153,7 +153,10 @@ export default function Header() {
             position: 'fixed', inset: 0, zIndex: 40,
             background: '#fff',
             display: 'flex', flexDirection: 'column',
-            paddingTop: 96, paddingLeft: 32, paddingRight: 32,
+            paddingTop: 'clamp(80px, 12vw, 96px)',
+            paddingLeft: 'clamp(24px, 6vw, 32px)',
+            paddingRight: 'clamp(24px, 6vw, 32px)',
+            paddingBottom: 'env(safe-area-inset-bottom)',
             animation: 'fadeIn 0.3s ease',
           }}
           className="lg:!hidden"
