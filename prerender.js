@@ -15,7 +15,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
   
   await page.goto('http://localhost:4173', { waitUntil: 'networkidle0' });
   
-  const html = await page.content();
+  let html = await page.content();
+  // CRITICAL FIX: Puppeteer serializes absolute DOM paths for img src
+  // We must strip http://localhost:4173/ and replace it with Vite's relative base './'
+  html = html.replace(/http:\/\/localhost:4173\//g, './');
+  
   const indexPath = path.join(__dirname, 'dist', 'index.html');
   fs.writeFileSync(indexPath, html);
   
