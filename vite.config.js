@@ -19,7 +19,7 @@ export default defineConfig({
       },
     })
   ],
-  base: '/BackEnd/',
+  base: '/',
   build: {
     target: 'es2015',
     // 優化打包：將 vendor (第三方套件) 獨立分包，善用瀏覽器快取機制
