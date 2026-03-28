@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const curricula = [
   {
@@ -48,6 +48,9 @@ const curricula = [
 ];
 
 export default function Curriculum() {
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: gridRef, isInView: gridInView } = useInViewAnimation({ margin: '-40px' });
+
   return (
     <section id="curriculum" style={{ position: 'relative', overflow: 'hidden' }}>
       {/* Blue gradient banner */}
@@ -55,11 +58,9 @@ export default function Curriculum() {
         background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #3b82f6 100%)',
         padding: '80px 24px',
       }}>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ maxWidth: 1200, margin: '0 auto' }}
         >
           <h2 className="section-heading" style={{
@@ -70,21 +71,17 @@ export default function Curriculum() {
             <br />
             <span style={{ color: '#fbbf24' }}>後端 & 雲端架構部署</span> 的核心領域！
           </h2>
-        </motion.div>
+        </div>
       </div>
 
       {/* Cards Section */}
       <div className="section-padding" style={{ background: 'linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%)' }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        <div ref={gridRef} style={{ maxWidth: 1200, margin: '0 auto' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-7">
             {curricula.map((item, idx) => (
-              <motion.div
+              <div
                 key={item.number}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="card"
+                className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
                 style={{ padding: 36, display: 'flex', flexDirection: 'column' }}
               >
                 {/* Number + Title */}
@@ -118,7 +115,7 @@ export default function Curriculum() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

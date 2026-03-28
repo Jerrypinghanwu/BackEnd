@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { Code2, ArrowUpRight, Users } from 'lucide-react';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const audiences = [
   {
@@ -26,15 +26,16 @@ const audiences = [
 ];
 
 export default function TargetAudience() {
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: gridRef, isInView: gridInView } = useInViewAnimation({ margin: '-50px' });
+
   return (
     <section id="audience" className="section-padding" style={{ background: '#fff' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
           <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', color: '#1e293b' }}>
@@ -43,20 +44,16 @@ export default function TargetAudience() {
           <p className="section-subheading" style={{ marginTop: 16 }}>
             無論你是初學者還是想進階的工程師，我們都為你準備了最適合的學習路徑
           </p>
-        </motion.div>
+        </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-7">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-3 gap-7">
           {audiences.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <div
                 key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: idx * 0.12 }}
-                className="card"
+                className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
                 style={{ padding: 44, textAlign: 'center' }}
               >
                 <div style={{
@@ -73,7 +70,7 @@ export default function TargetAudience() {
                 <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.8 }}>
                   {item.desc}
                 </p>
-              </motion.div>
+              </div>
             );
           })}
         </div>

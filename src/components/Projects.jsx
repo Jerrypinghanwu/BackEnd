@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { ShoppingCart, PlayCircle, Ticket, Rocket, BookOpen } from 'lucide-react';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const projects = [
   {
@@ -45,17 +45,18 @@ const projects = [
 ];
 
 export default function Projects() {
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: gridRef, isInView: gridInView } = useInViewAnimation({ margin: '-40px' });
+
   return (
     <section id="projects" className="section-padding" style={{
       background: 'linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%)',
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
           <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', color: '#1e293b' }}>
@@ -66,20 +67,16 @@ export default function Projects() {
           <p className="section-subheading" style={{ marginTop: 16 }}>
             多人組隊，從各商務主題中挑選其一進行開發
           </p>
-        </motion.div>
+        </div>
 
         {/* Project Cards — responsive grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
           {projects.map((proj, idx) => {
             const Icon = proj.icon;
             return (
-              <motion.div
+              <div
                 key={proj.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-40px' }}
-                transition={{ duration: 0.5, delay: idx * 0.08 }}
-                className="card"
+                className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
                 style={{ padding: 32, textAlign: 'center' }}
               >
                 {/* Icon */}
@@ -114,7 +111,7 @@ export default function Projects() {
                     </div>
                   ))}
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

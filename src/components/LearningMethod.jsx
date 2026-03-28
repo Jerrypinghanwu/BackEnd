@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { Video, ListChecks, MessageCircleQuestion } from 'lucide-react';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const methods = [
   {
@@ -35,15 +35,16 @@ const methods = [
 ];
 
 export default function LearningMethod() {
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: gridRef, isInView: gridInView } = useInViewAnimation({ margin: '-50px' });
+
   return (
     <section id="learning" className="section-padding" style={{ background: '#fff' }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
           <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', color: '#1e293b' }}>
@@ -52,20 +53,16 @@ export default function LearningMethod() {
           <p className="section-subheading" style={{ marginTop: 16 }}>
             多元學習方式，讓你從預習到實戰全面覆蓋
           </p>
-        </motion.div>
+        </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-7">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-3 gap-7">
           {methods.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <div
                 key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-50px' }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                className="card"
+                className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
                 style={{ padding: 36 }}
               >
                 <div style={{
@@ -95,7 +92,7 @@ export default function LearningMethod() {
                     </li>
                   ))}
                 </ul>
-              </motion.div>
+              </div>
             );
           })}
         </div>

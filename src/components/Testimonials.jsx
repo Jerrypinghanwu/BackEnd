@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
 import { Star, Quote } from 'lucide-react';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 /* Animated counter hook */
 function useCountUp(target, duration = 2000, startCounting = false) {
@@ -41,11 +41,9 @@ function AnimatedStat({ numericValue, suffix, label, delay, isInView }) {
   const displayValue = isDecimal ? count.toFixed(1) : Math.round(count);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: delay / 1000 }}
-      style={{ textAlign: 'center', minWidth: 140 }}
+    <div
+      className={`fade-up-sm ${isInView ? 'in-view' : ''}`}
+      style={{ textAlign: 'center', minWidth: 140, transitionDelay: `${delay / 1000}s` }}
     >
       <div style={{ fontSize: 42, fontWeight: 800, color: '#fff', lineHeight: 1.2 }}>
         {displayValue}{suffix}
@@ -53,7 +51,7 @@ function AnimatedStat({ numericValue, suffix, label, delay, isInView }) {
       <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.8)', marginTop: 10 }}>
         {label}
       </div>
-    </motion.div>
+    </div>
   );
 }
 
@@ -95,8 +93,9 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
-  const statsRef = useRef(null);
-  const isStatsInView = useInView(statsRef, { once: true, margin: '-100px' });
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: gridRef, isInView: gridInView } = useInViewAnimation({ margin: '-50px' });
+  const { ref: statsRef, isInView: statsInView } = useInViewAnimation({ margin: '-100px' });
 
   return (
     <section id="testimonials" style={{
@@ -105,11 +104,9 @@ export default function Testimonials() {
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 72 }}
         >
           <h2 className="section-heading" style={{
@@ -121,18 +118,14 @@ export default function Testimonials() {
           <p className="section-subheading" style={{ marginTop: 16 }}>
             聽聽已結業的學員們怎麼說，他們的經歷就是最好的證明
           </p>
-        </motion.div>
+        </div>
 
         {/* Testimonial Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {testimonials.map((t, idx) => (
-            <motion.div
+            <div
               key={t.name}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: idx * 0.12 }}
-              className="card"
+              className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
               style={{
                 padding: 36,
                 display: 'flex',
@@ -216,7 +209,7 @@ export default function Testimonials() {
               }}>
                 「{t.text}」
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
 
@@ -240,7 +233,7 @@ export default function Testimonials() {
               suffix={stat.suffix}
               label={stat.label}
               delay={stat.delay}
-              isInView={isStatsInView}
+              isInView={statsInView}
             />
           ))}
         </div>

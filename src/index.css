@@ -106,10 +106,6 @@ body {
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  /* Hardware Acceleration for perfectly smooth scrolling without repaints */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform, box-shadow;
 }
 
 .card:hover {
@@ -122,10 +118,6 @@ body {
   border-radius: 1rem;
   border: 1px solid var(--color-neutral-200);
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  /* Hardware Acceleration */
-  transform: translateZ(0);
-  backface-visibility: hidden;
-  will-change: transform, box-shadow, border-color;
 }
 
 .card-bordered:hover {
@@ -266,18 +258,6 @@ body {
   color: #1e293b;
 }
 
-/* ===== Animate on scroll fade-up ===== */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 /* ===== Responsive Container ===== */
 .container-narrow {
   max-width: 900px;
@@ -287,4 +267,268 @@ body {
 .container-wide {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+/* ===================================================================
+   IntersectionObserver-driven fade-in animations
+   (replaces framer-motion whileInView for below-fold sections)
+   =================================================================== */
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-up-sm {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-up-sm.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.fade-scale.in-view {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger delay utilities */
+.delay-1 { transition-delay: 0.08s; }
+.delay-2 { transition-delay: 0.16s; }
+.delay-3 { transition-delay: 0.24s; }
+.delay-4 { transition-delay: 0.32s; }
+.delay-5 { transition-delay: 0.40s; }
+.delay-6 { transition-delay: 0.48s; }
+
+/* ===================================================================
+   HeroBanner CSS animations (replacing framer-motion JS animations)
+   =================================================================== */
+
+/* Gradient overlay pulse */
+@keyframes gradientPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.hero-gradient-overlay {
+  animation: gradientPulse 10s linear infinite;
+}
+
+/* Glowing orbs */
+@keyframes orbFloat1 {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(-30px); opacity: 1; }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translateY(0); opacity: 0.8; }
+  50% { transform: translateY(30px); opacity: 1; }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-40px); }
+}
+
+.hero-orb-1 { animation: orbFloat1 15s ease-in-out infinite; }
+.hero-orb-2 { animation: orbFloat2 18s ease-in-out infinite; }
+.hero-orb-3 { animation: orbFloat3 12s ease-in-out infinite; }
+
+/* Floating particles */
+@keyframes particleFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.3; }
+  25% { transform: translateY(-30px); opacity: 0.7; }
+  50% { transform: translateY(10px); opacity: 0.4; }
+  75% { transform: translateY(-20px); opacity: 0.8; }
+}
+
+.hero-particle {
+  animation: particleFloat var(--duration, 6s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Floating code tags */
+@keyframes tagFloat {
+  0%, 100% { opacity: 0; transform: translateY(0) rotate(var(--rotate, 0deg)); }
+  25% { opacity: 0.15; transform: translateY(-15px) rotate(var(--rotate, 0deg)); }
+  50% { opacity: 0.25; transform: translateY(5px) rotate(var(--rotate, 0deg)); }
+  75% { opacity: 0.15; transform: translateY(-10px) rotate(var(--rotate, 0deg)); }
+}
+
+.hero-tag {
+  animation: tagFloat var(--duration, 8s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+/* Badge pulse */
+@keyframes badgePulse {
+  0%, 100% { opacity: 0.8; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.hero-badge {
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+/* Sparkle icon rotation */
+@keyframes sparkleRotate {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+.hero-sparkle {
+  animation: sparkleRotate 4s ease-in-out infinite;
+}
+
+/* "6 個月" color animation */
+@keyframes monthColorPulse {
+  0%, 100% { color: #ef4444; }
+  50% { color: #f87171; }
+}
+
+.hero-month-highlight {
+  animation: monthColorPulse 4s ease-in-out infinite;
+}
+
+/* "後端工程師" opacity animation */
+@keyframes textGlow {
+  0%, 100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+.hero-text-glow {
+  animation: textGlow 3s ease-in-out infinite;
+}
+
+/* Scroll indicator */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(12px); }
+}
+
+@keyframes scrollDotBounce {
+  0%, 100% { opacity: 1; transform: translateY(0); }
+  50% { opacity: 0.3; transform: translateY(12px); }
+}
+
+.hero-scroll-indicator {
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.hero-scroll-dot {
+  animation: scrollDotBounce 2s ease-in-out infinite;
+}
+
+/* Hero content entrance animation */
+@keyframes heroContentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-entrance {
+  opacity: 0;
+  animation: heroContentFadeIn 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.hero-entrance-1 { animation-delay: 0.4s; }
+.hero-entrance-2 { animation-delay: 0.55s; }
+.hero-entrance-3 { animation-delay: 0.7s; }
+.hero-entrance-4 { animation-delay: 0.85s; }
+.hero-entrance-5 { animation-delay: 2s; }
+
+/* Challenge card hover */
+.challenge-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.challenge-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.12);
+}
+
+/* Challenge icon hover */
+.challenge-icon {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.challenge-card:hover .challenge-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* CTA button hover effects */
+.hero-cta-primary {
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+.hero-cta-primary:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+.hero-cta-primary:active {
+  transform: scale(0.97);
+}
+
+.hero-cta-secondary {
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.hero-cta-secondary:hover {
+  transform: scale(1.05) translateY(-2px);
+  background-color: rgba(255, 255, 255, 0.15);
+}
+.hero-cta-secondary:active {
+  transform: scale(0.97);
+}
+
+/* Mobile menu fade-in */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== Prefers Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+  .hero-gradient-overlay,
+  .hero-orb-1, .hero-orb-2, .hero-orb-3,
+  .hero-particle, .hero-tag,
+  .hero-badge, .hero-sparkle,
+  .hero-month-highlight, .hero-text-glow,
+  .hero-scroll-indicator, .hero-scroll-dot {
+    animation: none;
+  }
+  
+  .hero-entrance {
+    animation: none;
+    opacity: 1;
+  }
+
+  .fade-up, .fade-up-sm, .fade-scale {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
 }

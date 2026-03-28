@@ -12,11 +12,9 @@ const TargetAudience = lazy(() => import('./components/TargetAudience'));
 const Testimonials = lazy(() => import('./components/Testimonials'));
 const Footer = lazy(() => import('./components/Footer'));
 
-// Simple loading placeholder
+// Minimal loading placeholder that doesn't cause layout shift
 const SectionLoader = () => (
-  <div style={{ padding: '60px 0', textAlign: 'center', color: '#94a3b8' }}>
-    載入中...
-  </div>
+  <div style={{ minHeight: '200px' }} />
 );
 
 function App() {

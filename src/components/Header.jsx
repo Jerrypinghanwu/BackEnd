@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -13,39 +12,51 @@ const navLinks = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(false);
 
-  // Framework-optimized extreme scroll handling to avoid manual repaint issues
-  const { scrollY } = useScroll();
-  useMotionValueEvent(scrollY, "change", (latest) => {
-    setScrolled(latest > 50);
-  });
+  // Optimized passive scroll listener
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Trigger entrance animation
+    requestAnimationFrame(() => setHeaderVisible(true));
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [mobileOpen]);
 
-  const scrollToSection = (id) => {
+  const scrollToSection = useCallback((id) => {
     setMobileOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   return (
     <>
-      <motion.header
-        initial={{ y: -80, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+      <header
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           right: 0,
           zIndex: 50,
-          transition: 'all 0.4s ease',
+          transition: 'all 0.4s ease, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           padding: scrolled ? '12px 0' : '20px 0',
           background: scrolled ? '#ffffff' : 'transparent',
           boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.06)' : 'none',
+          transform: headerVisible ? 'translateY(0)' : 'translateY(-80px)',
+          opacity: headerVisible ? 1 : 0,
         }}
       >
         <div style={{
@@ -57,10 +68,8 @@ export default function Header() {
           justifyContent: 'space-between',
         }}>
           {/* Logo */}
-          <motion.div
+          <div
             style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', userSelect: 'none', flexShrink: 0 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <span style={{
@@ -70,7 +79,7 @@ export default function Header() {
             }}>
               兆宇培育
             </span>
-          </motion.div>
+          </div>
 
           {/* Desktop Navigation — center area */}
           <nav style={{
@@ -102,9 +111,7 @@ export default function Header() {
           </nav>
 
           {/* Desktop CTA — right side */}
-          <motion.button
-            whileHover={{ scale: 1.05, y: -1 }}
-            whileTap={{ scale: 0.95 }}
+          <button
             onClick={() => scrollToSection('curriculum')}
             style={{
               display: 'none',
@@ -114,11 +121,14 @@ export default function Header() {
               padding: '10px 24px', borderRadius: 9999,
               border: 'none', cursor: 'pointer', flexShrink: 0,
               boxShadow: '0 4px 14px rgba(37,99,235,0.3)',
+              transition: 'transform 0.2s ease, box-shadow 0.3s ease',
             }}
             className="lg:!inline-flex"
+            onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05) translateY(-1px)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
           >
             立即了解課程
-          </motion.button>
+          </button>
 
           {/* Mobile Menu Toggle */}
           <button
@@ -134,56 +144,54 @@ export default function Header() {
             )}
           </button>
         </div>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+      {mobileOpen && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, zIndex: 40,
+            background: '#fff',
+            display: 'flex', flexDirection: 'column',
+            paddingTop: 96, paddingLeft: 32, paddingRight: 32,
+            animation: 'fadeIn 0.3s ease',
+          }}
+          className="lg:!hidden"
+        >
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label="行動裝置導航">
+            {navLinks.map((item, i) => (
+              <button
+                key={item.id}
+                onClick={() => scrollToSection(item.id)}
+                style={{
+                  textAlign: 'left', fontSize: 18, fontWeight: 500,
+                  color: '#334155', padding: '16px 0',
+                  background: 'none', border: 'none',
+                  borderBottom: '1px solid #f1f5f9',
+                  cursor: 'pointer',
+                  opacity: 0,
+                  animation: `heroContentFadeIn 0.4s ease forwards`,
+                  animationDelay: `${i * 0.08}s`,
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+          </nav>
+          <button
+            className="btn-primary"
             style={{
-              position: 'fixed', inset: 0, zIndex: 40,
-              background: '#fff',
-              display: 'flex', flexDirection: 'column',
-              paddingTop: 96, paddingLeft: 32, paddingRight: 32,
+              marginTop: 32, width: '100%', padding: '16px 0', fontSize: 18,
+              opacity: 0,
+              animation: 'heroContentFadeIn 0.4s ease forwards',
+              animationDelay: '0.4s',
             }}
-            className="lg:!hidden"
+            onClick={() => scrollToSection('curriculum')}
           >
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: 8 }} aria-label="行動裝置導航">
-              {navLinks.map((item, i) => (
-                <motion.button
-                  key={item.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                  onClick={() => scrollToSection(item.id)}
-                  style={{
-                    textAlign: 'left', fontSize: 18, fontWeight: 500,
-                    color: '#334155', padding: '16px 0',
-                    borderBottom: '1px solid #f1f5f9',
-                    background: 'none', border: 'none', borderBottomWidth: 1, borderBottomStyle: 'solid', borderBottomColor: '#f1f5f9',
-                    cursor: 'pointer',
-                  }}
-                >
-                  {item.label}
-                </motion.button>
-              ))}
-            </nav>
-            <motion.button
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="btn-primary"
-              style={{ marginTop: 32, width: '100%', padding: '16px 0', fontSize: 18 }}
-              onClick={() => scrollToSection('curriculum')}
-            >
-              立即了解課程
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            立即了解課程
+          </button>
+        </div>
+      )}
     </>
   );
 }

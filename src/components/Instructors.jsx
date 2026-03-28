@@ -1,5 +1,5 @@
-import { motion } from 'framer-motion';
 import { Compass, Palette } from 'lucide-react';
+import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const supports = [
   {
@@ -27,17 +27,20 @@ const steps = [
 ];
 
 export default function Instructors() {
+  const { ref: titleRef, isInView: titleInView } = useInViewAnimation();
+  const { ref: supportsRef, isInView: supportsInView } = useInViewAnimation();
+  const { ref: stepsTitle, isInView: stepsTitleInView } = useInViewAnimation();
+  const { ref: stepsGrid, isInView: stepsGridInView } = useInViewAnimation();
+
   return (
     <section id="instructors" className="section-padding" style={{
       background: 'linear-gradient(180deg, #eff6ff 0%, #f8fafc 100%)',
     }}>
       <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={titleRef}
+          className={`fade-up-sm ${titleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 64 }}
         >
           <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', color: '#1e293b' }}>
@@ -45,19 +48,16 @@ export default function Instructors() {
             <br />
             從 0 到 1 完成<span style={{ color: '#2563eb' }}>企業級作品</span>
           </h2>
-        </motion.div>
+        </div>
 
         {/* Support Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-20">
+        <div ref={supportsRef} className="grid grid-cols-1 md:grid-cols-2 gap-7 mb-20">
           {supports.map((item, idx) => {
             const Icon = item.icon;
             return (
-              <motion.div
+              <div
                 key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="card flex flex-col sm:flex-row items-start gap-6 p-8 sm:p-10"
+                className={`card flex flex-col sm:flex-row items-start gap-6 p-8 sm:p-10 fade-up ${supportsInView ? 'in-view' : ''} delay-${idx + 1}`}
               >
                 <div style={{
                   width: 56, height: 56, borderRadius: 16,
@@ -75,17 +75,15 @@ export default function Instructors() {
                     {item.desc}
                   </p>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Steps Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+          ref={stepsTitle}
+          className={`fade-up-sm ${stepsTitleInView ? 'in-view' : ''}`}
           style={{ textAlign: 'center', marginBottom: 48 }}
         >
           <h3 className="section-heading" style={{ fontSize: 'clamp(1.3rem, 2.5vw, 1.75rem)', color: '#1e293b' }}>
@@ -94,17 +92,13 @@ export default function Instructors() {
           <p style={{ color: '#64748b', marginTop: 12, fontSize: 16 }}>
             由專題教練引導，透過五大步驟完成團隊專題
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+        <div ref={stepsGrid} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
           {steps.map((s, idx) => (
-            <motion.div
+            <div
               key={s.step}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="card"
+              className={`card fade-scale ${stepsGridInView ? 'in-view' : ''} delay-${idx + 1}`}
               style={{ padding: 28, textAlign: 'center' }}
             >
               <div style={{ fontSize: 24, fontWeight: 800, color: s.color, marginBottom: 12 }}>
@@ -120,7 +114,7 @@ export default function Instructors() {
                   ))}
                 </div>
               )}
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
