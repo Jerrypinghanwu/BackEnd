@@ -152,16 +152,25 @@ export default function Testimonials() {
                   overflow: 'hidden', flexShrink: 0,
                   border: '3px solid #dbeafe',
                   boxShadow: '0 4px 12px rgba(37,99,235,0.1)',
+                  background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative',
                 }}>
+                  <span style={{
+                    fontSize: 22, fontWeight: 700, color: '#fff',
+                    position: 'absolute',
+                  }}>
+                    {t.name.charAt(0)}
+                  </span>
                   <img
                     src={t.photo}
                     alt={t.name}
                     style={{
                       width: '100%', height: '100%',
                       objectFit: 'cover',
+                      position: 'relative', zIndex: 1,
                     }}
-                    loading="lazy"
-                    decoding="async"
+                    onError={(e) => { e.target.style.display = 'none'; }}
                   />
                 </div>
                 <div>
