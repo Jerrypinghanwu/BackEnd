@@ -1,34 +1,46 @@
-import { TrendingUp, Code2, BrainCircuit, Users, Sparkles } from 'lucide-react';
+import { useState } from 'react';
+import { TrendingUp, Code2, BrainCircuit, Users, Sparkles, Zap, ShieldCheck, Database, Target, ArrowRight } from 'lucide-react';
 import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
-const challenges = [
+const salaryData = [
   {
-    icon: TrendingUp,
-    color: '#f97316',
-    bg: '#fff7ed',
-    title: '學習曲線非常陡',
-    desc: '資料庫、AWS 雲端伺服器、API 技術面廣',
+    level: '入行起步 (0-1年)',
+    salary: '$50萬 - $70萬',
+    percent: 30,
+    color: '#3b82f6',
+    value: '掌握基礎，開始具備實戰開發能力。',
   },
   {
-    icon: Code2,
-    color: '#2563eb',
-    bg: '#eff6ff',
-    title: '實戰經驗超級缺',
-    desc: '專案經驗少，難展現複雜後端架構',
+    level: '轉職跳槽 (2-3年)',
+    salary: '$80萬 - $120萬',
+    percent: 60,
+    color: '#6366f1',
+    value: '成為即戰力，能獨立負責企業級專案。',
   },
   {
-    icon: BrainCircuit,
+    level: '資深架構 (5年以上)',
+    salary: '$150萬 - $300萬+',
+    percent: 100,
     color: '#8b5cf6',
-    bg: '#f5f3ff',
-    title: '系統思維要求高',
-    desc: '要全面考量效能、安全、擴展性',
+    value: '決定系統架構，年薪隨技術護城河無限成長。',
+  },
+];
+
+const aiReasons = [
+  {
+    icon: Database,
+    title: 'AI 只能寫片段，無法蓋大樓',
+    desc: 'AI 可以幫你寫一小段代碼，但它沒辦法幫企業設計出一套能同時讓萬人搶票、而不當機的「票務系統」。這需要工程師的系統設計大腦。',
   },
   {
-    icon: Users,
-    color: '#10b981',
-    bg: '#ecfdf5',
-    title: '團隊合作霹靂難',
-    desc: '需要多人協作，溝通整合大挑戰',
+    icon: ShieldCheck,
+    title: 'AI 會出錯，工程師負責「扛責任」',
+    desc: 'AI 生成的內容常有錯誤或資安漏洞。企業需要專業後端來確保系統極致穩定，這是 AI 永遠給不了的安心感。',
+  },
+  {
+    icon: Target,
+    title: 'AI 沒有商業邏輯',
+    desc: '老闆的需求總是變來變去，AI 聽不懂潛台詞。只有工程師能擔任技術決策者，把複雜的人類需求變成穩定運作的獲利系統。',
   },
 ];
 
@@ -53,8 +65,9 @@ const floatingTags = [
 ];
 
 export default function HeroBanner() {
-  const { ref: challengesTitleRef, isInView: challengesTitleInView } = useInViewAnimation({ margin: '-80px' });
-  const { ref: challengesGridRef, isInView: challengesGridInView } = useInViewAnimation({ margin: '-50px' });
+  const [hoveredSalary, setHoveredSalary] = useState(null);
+  const { ref: aiSectionRef, isInView: aiSectionInView } = useInViewAnimation({ margin: '-80px' });
+  const { ref: salaryHeaderRef, isInView: salaryHeaderInView } = useInViewAnimation();
 
   return (
     <section id="hero" style={{ position: 'relative', overflow: 'hidden' }}>
@@ -275,60 +288,150 @@ export default function HeroBanner() {
         </div>
       </div>
 
-      {/* ===== Challenges Section ===== */}
-      <div id="highlights" className="section-padding" style={{ background: 'linear-gradient(180deg, #f8fafc 0%, #fff 100%)' }}>
-        <div className="section-container">
-          <div
-            ref={challengesTitleRef}
-            className={`fade-up-sm ${challengesTitleInView ? 'in-view' : ''}`}
-            style={{ textAlign: 'center', marginBottom: 64 }}
-          >
-            <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3vw, 2.25rem)', color: '#1e293b' }}>
-              想成為後端工程師的
-              <span style={{ color: '#2563eb' }}> 隱藏挑戰</span>
+      {/* ===== AI & Career Section ===== */}
+      <div id="ai-vision" className="section-padding" style={{ background: '#fff' }}>
+        <div className="section-container" ref={aiSectionRef}>
+          {/* AI Intro */}
+          <div className={`fade-up-sm ${aiSectionInView ? 'in-view' : ''}`} style={{ textAlign: 'center', marginBottom: 80 }}>
+            <h2 className="section-heading" style={{ fontSize: 'clamp(1.5rem, 3.5vw, 2.5rem)', color: '#1e293b', maxWidth: 1000, margin: '0 auto' }}>
+              🔍 AI 浪潮來襲：這不是威脅，
+              <br className="md:block hidden" />
+              而是你<span style={{ color: '#2563eb' }}>「年薪翻倍」</span>的最好時機！
             </h2>
-            <p className="section-subheading" style={{ marginTop: 16 }}>
-              這些痛點，我們深知。課程設計就是為了一一擊破！
-            </p>
+            <div style={{ maxWidth: 800, margin: '32px auto 0' }}>
+              <p style={{ fontSize: 18, color: '#475569', fontWeight: 500, lineHeight: 1.6 }}>
+                很多人問：「AI 會寫程式了，現在學開發還有前途嗎？」
+                <br />
+                事實是：<span style={{ color: '#ef4444', fontWeight: 700 }}>AI 淘汰的是「只會打字」的人，而不是「會思考」的工程師。</span>
+              </p>
+            </div>
           </div>
 
-          {/* Challenge Cards */}
-          <div
-            ref={challengesGridRef}
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: 24,
-            }}
-          >
-            {challenges.map((item, idx) => {
+          {/* AI Reasons Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8" style={{ marginBottom: 100 }}>
+            {aiReasons.map((item, idx) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className={`card-bordered challenge-card fade-up ${challengesGridInView ? 'in-view' : ''} delay-${idx + 1}`}
-                  style={{ padding: 36, textAlign: 'center' }}
+                  className={`fade-up ${aiSectionInView ? 'in-view' : ''} delay-${idx + 1}`}
+                  style={{
+                    padding: 40, background: '#f8fafc', borderRadius: 24,
+                    border: '1px solid #e2e8f0', transition: 'all 0.3s ease'
+                  }}
                 >
-                  <div
-                    className="challenge-icon"
-                    style={{
-                      width: 72, height: 72, borderRadius: 20,
-                      background: item.bg, color: item.color,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      margin: '0 auto 24px',
-                    }}
-                  >
-                    <Icon style={{ width: 36, height: 36 }} strokeWidth={1.5} />
+                  <div style={{
+                    width: 56, height: 56, borderRadius: 16,
+                    background: '#eff6ff', color: '#2563eb',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    marginBottom: 24
+                  }}>
+                    <Icon size={28} />
                   </div>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, color: '#1e293b', marginBottom: 12 }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: 14, color: '#64748b', lineHeight: 1.7 }}>
-                    {item.desc}
-                  </p>
+                  <h3 style={{ fontSize: 20, fontWeight: 700, color: '#1e293b', marginBottom: 16 }}>{item.title}</h3>
+                  <p style={{ fontSize: 15, color: '#64748b', lineHeight: 1.75 }}>{item.desc}</p>
                 </div>
               );
             })}
+          </div>
+
+          {/* Salary Section */}
+          <div ref={salaryHeaderRef} className={`fade-up-sm ${salaryHeaderInView ? 'in-view' : ''}`}>
+            <div style={{ textAlign: 'center', marginBottom: 56 }}>
+              <h3 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: '#1e293b' }}>
+                💰 轉職後端工程師：<span style={{ color: '#2563eb' }}>看不見天花板</span>的薪資成長
+              </h3>
+              <p style={{ marginTop: 12, color: '#64748b', fontSize: 16 }}>
+                後端工程師是所有互聯網產品的「心臟」，地位無可取代
+              </p>
+            </div>
+
+            {/* Salary Interactive Chart */}
+            <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {salaryData.map((stage, idx) => (
+                <div
+                  key={stage.level}
+                  onMouseEnter={() => setHoveredSalary(idx)}
+                  onMouseLeave={() => setHoveredSalary(null)}
+                  style={{
+                    padding: '24px 32px', borderRadius: 20,
+                    background: hoveredSalary === idx ? '#fff' : '#f8fafc',
+                    boxShadow: hoveredSalary === idx ? '0 20px 40px -12px rgba(0,0,0,0.1)' : 'none',
+                    border: hoveredSalary === idx ? `2px solid ${stage.color}44` : '2px solid transparent',
+                    cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+                    transform: hoveredSalary === idx ? 'translateX(10px) scale(1.02)' : 'translateX(0) scale(1)',
+                    position: 'relative', overflow: 'hidden'
+                  }}
+                >
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 16, position: 'relative', zIndex: 2 }}>
+                    <div style={{ minWidth: 200 }}>
+                      <p style={{ fontSize: 14, fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 4 }}>
+                        {stage.level}
+                      </p>
+                      <h4 style={{ fontSize: 24, fontWeight: 800, color: '#1e293b' }}>{stage.salary}</h4>
+                    </div>
+                    
+                    <div style={{ flex: 1, height: 12, background: '#e2e8f0', borderRadius: 99, overflow: 'hidden', minWidth: 200 }}>
+                      <div style={{
+                        width: `${stage.percent}%`, height: '100%',
+                        background: `linear-gradient(90deg, ${stage.color}88, ${stage.color})`,
+                        borderRadius: 99, transition: 'width 1s ease',
+                        boxShadow: hoveredSalary === idx ? `0 0 20px ${stage.color}aa` : 'none'
+                      }} />
+                    </div>
+
+                    <div style={{ 
+                      width: 48, height: 48, borderRadius: '50%', background: hoveredSalary === idx ? stage.color : '#e2e8f0',
+                      color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      transition: 'all 0.3s ease', transform: hoveredSalary === idx ? 'rotate(-45deg)' : 'none'
+                    }}>
+                      <Zap size={24} fill={hoveredSalary === idx ? '#fff' : 'none'} />
+                    </div>
+                  </div>
+
+                  {/* Expansion Detail */}
+                  <div style={{
+                    maxHeight: hoveredSalary === idx ? 100 : 0,
+                    opacity: hoveredSalary === idx ? 1 : 0,
+                    overflow: 'hidden', transition: 'all 0.3s ease',
+                    marginTop: hoveredSalary === idx ? 16 : 0
+                  }}>
+                    <div style={{ padding: '16px 0 0', borderTop: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: 10 }}>
+                      <ArrowRight size={18} style={{ color: stage.color }} />
+                      <p style={{ color: '#475569', fontSize: 15, fontWeight: 500 }}>{stage.value}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ textAlign: 'center', marginTop: 48 }}>
+              <blockquote style={{ fontSize: 20, fontWeight: 700, color: '#1e293b', fontStyle: 'italic' }}>
+                「現在轉職工程師，年薪百萬不再是夢想，而是你的職涯標配。」
+              </blockquote>
+            </div>
+          </div>
+
+          {/* AI Footer Call to Action */}
+          <div className={`fade-up ${aiSectionInView ? 'in-view' : ''}`} style={{ 
+            marginTop: 100, padding: '64px 40px', borderRadius: 32,
+            background: 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #2563eb 100%)',
+            textAlign: 'center', color: '#fff'
+          }}>
+            <h3 style={{ fontSize: '1.75rem', fontWeight: 800, marginBottom: 24 }}>🚀 如何不被 AI 取代？</h3>
+            <p style={{ fontSize: 18, color: '#cbd5e1', maxWidth: 800, margin: '0 auto 40px', lineHeight: 1.8 }}>
+              答案只有一個：<span style={{ color: '#fbbf24', fontWeight: 700 }}>學會如何「指揮」AI，並掌握它做不到的底層技術。</span>
+              <br />
+              在我們的課程中，我們不教你死背語法，我們教你 Linux 底層、資料庫邏輯與架構設計。
+              這才是讓你即使在 AI 時代，依然被企業高薪爭搶的硬實力！
+            </p>
+            <button 
+              onClick={() => window.open('https://line.me/R/ti/p/@348vdgmy?ts=01092129&oat_content=url', '_blank')}
+              className="btn-primary" 
+              style={{ padding: '16px 48px', fontSize: 18, background: '#fff', color: '#1e293b', boxShadow: '0 20px 40px rgba(0,0,0,0.3)' }}
+            >
+              獲取 AI 時代職涯規劃 <ArrowRight size={20} />
+            </button>
           </div>
         </div>
       </div>
