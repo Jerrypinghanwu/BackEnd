@@ -6,7 +6,7 @@ const tracks = {
     label: 'Standard',
     title: 'Java 後端基礎實務班',
     subtitle: 'Junior Developer Track',
-    color: '#2563eb',
+    color: '#38bdf8', /* Brighter cyan for visibility on blue background */
     bg: '#eff6ff',
     items: [
       {
@@ -57,7 +57,7 @@ const tracks = {
     label: 'Advanced',
     title: '高階後端架構進階班',
     subtitle: 'Advanced Architect Track',
-    color: '#f97316',
+    color: '#fb923c', /* Brighter orange for visibility */
     bg: '#fff7ed',
     items: [
       {
@@ -127,10 +127,15 @@ export default function Curriculum() {
           style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}
         >
           <h2 className="section-heading" style={{
-            fontSize: 'clamp(1.75rem, 4vw, 3rem)',
-            color: '#fff', marginBottom: 16, lineHeight: 1.2,
+            fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+            color: '#fff', marginBottom: 16, lineHeight: 1.1,
+            fontWeight: 900, letterSpacing: '-0.02em',
+            textTransform: 'uppercase'
           }}>
-            <span style={{ color: currentTrack.color }}>{currentTrack.label}</span> 專業課程架構
+            <span style={{ 
+              color: currentTrack.color,
+              textShadow: `0 0 30px ${currentTrack.color}66`
+            }}>{currentTrack.label}</span> 專業課程架構
           </h2>
           <p style={{ fontSize: 'clamp(1rem, 1.8vw, 1.15rem)', color: '#94a3b8', fontWeight: 500 }}>
             {currentTrack.title} — {currentTrack.subtitle}
@@ -139,26 +144,39 @@ export default function Curriculum() {
 
         {/* Track Switcher */}
         <div style={{
-          display: 'flex', justifyContent: 'center', marginTop: 32, gap: 12,
-          padding: 6, background: 'rgba(255,255,255,0.05)', borderRadius: 16,
-          width: 'fit-content', margin: '32px auto 0', border: '1px solid rgba(255,255,255,0.1)'
+          display: 'flex', justifyContent: 'center', marginTop: 32, gap: 8,
+          padding: 6, background: 'rgba(255, 255, 255, 0.08)', borderRadius: 16,
+          width: 'fit-content', margin: '32px auto 0', border: '1px solid rgba(255, 255, 255, 0.2)',
+          backdropFilter: 'blur(10px)', boxBlur: '10px'
         }}>
-          {Object.keys(tracks).map((key) => (
-            <button
-              key={key}
-              onClick={() => setActiveTrack(key)}
-              style={{
-                padding: '10px 28px', borderRadius: 12, fontSize: 15, fontWeight: 600,
-                cursor: 'pointer', transition: 'all 0.3s ease',
-                background: activeTrack === key ? tracks[key].color : 'transparent',
-                color: activeTrack === key ? '#fff' : '#94a3b8',
-                border: 'none',
-                boxShadow: activeTrack === key ? `0 10px 20px -5px ${tracks[key].color}44` : 'none'
-              }}
-            >
-              {tracks[key].label}
-            </button>
-          ))}
+          {Object.keys(tracks).map((key) => {
+            const isActive = activeTrack === key;
+            return (
+              <button
+                key={key}
+                onClick={() => setActiveTrack(key)}
+                className="track-bubble-btn"
+                style={{
+                  padding: '12px 32px', borderRadius: 12, fontSize: 16, fontWeight: 700,
+                  cursor: 'pointer', transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  background: isActive ? '#fff' : 'transparent',
+                  color: isActive ? tracks[key].color : 'rgba(255, 255, 255, 0.6)',
+                  border: 'none',
+                  boxShadow: isActive ? '0 10px 25px -5px rgba(0, 0, 0, 0.3)' : 'none',
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  transform: isActive ? 'scale(1.02)' : 'scale(1)',
+                }}
+              >
+                {isActive && (
+                  <span style={{ 
+                    width: 8, height: 8, borderRadius: '50%', 
+                    background: tracks[key].color, display: 'inline-block' 
+                  }} />
+                )}
+                {tracks[key].label}
+              </button>
+            );
+          })}
         </div>
       </div>
 

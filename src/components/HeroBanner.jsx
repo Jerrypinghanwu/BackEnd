@@ -182,28 +182,30 @@ export default function HeroBanner() {
           </div>
 
           {/* Main Heading */}
-          <h1
-            className="hero-entrance hero-entrance-2"
-            style={{
-              fontFamily: "'Noto Sans TC', sans-serif",
-              fontWeight: 800, lineHeight: 1.25,
-              fontSize: 'clamp(2rem, 5vw, 3.75rem)',
-              color: '#fff', marginBottom: 32,
-              maxWidth: 900, marginLeft: 'auto', marginRight: 'auto',
-            }}
-          >
-            我們用
-            <span className="hero-month-highlight" style={{ display: 'inline', fontWeight: 900 }}>
-              6 個月
-            </span>
-            時間
-            <br />
-            手把手帶你成為
-            <br />
-            <span className="hero-text-glow" style={{ color: '#fbbf24', display: 'inline' }}>
-              後端工程師
-            </span>
-          </h1>
+          <div className="hero-title-container">
+            <h1
+              className="hero-entrance hero-entrance-2"
+              style={{
+                fontFamily: "'Noto Sans TC', sans-serif",
+                fontWeight: 800, lineHeight: 1.25,
+                fontSize: 'clamp(2rem, 5vw, 3.75rem)',
+                color: '#fff', marginBottom: 32,
+                maxWidth: 900, marginLeft: 'auto', marginRight: 'auto',
+              }}
+            >
+              我們用
+              <span className="hero-month-highlight" style={{ fontWeight: 900 }}>
+                6個月
+              </span>
+              時間
+              <br />
+              手把手帶你成為
+              <br />
+              <span className="hero-text-glow" style={{ fontWeight: 900 }}>
+                後端工程師
+              </span>
+            </h1>
+          </div>
 
           {/* Subtitle */}
           <p

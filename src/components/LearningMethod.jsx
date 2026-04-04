@@ -1,35 +1,53 @@
-import { Video, ListChecks, MessageCircleQuestion } from 'lucide-react';
+import { Video, PlayCircle, GraduationCap, Lightbulb } from 'lucide-react';
 import { useInViewAnimation } from '../hooks/useInViewAnimation';
 
 const methods = [
   {
     icon: Video,
-    color: '#2563eb',
-    bg: '#eff6ff',
-    title: '直播、影音教學雙管齊下',
+    color: '#4285f4', // Google Blue
+    bg: '#f8f9fa',
+    title: '專業視訊即時授課',
     points: [
-      '預習課程：報名課程即可獲得課前預習，提早註冊直接贏在起跑點',
-      '直播互動：除了看老師 Live Coding，還能隨時在直播間發問，即時獲得解答！',
+      {
+        label: 'Google Meet 實時互動',
+        text: '我們採用 Google Meet 等專業視訊軟體，由真人老師線上即時教學。不只是單向聽課，更能隨時與老師交流，享受最高互動性的學習體驗。'
+      },
+      {
+        label: '即時問題解答',
+        text: '上課遇到卡關？你可以隨時舉手發問，老師會針對你的疑問現場示範與解惑，確保當下就能吸收。'
+      },
     ],
   },
   {
-    icon: ListChecks,
-    color: '#f97316',
-    bg: '#fff7ed',
-    title: '每日、每週任務',
+    icon: PlayCircle,
+    color: '#ea4335', // Google Red
+    bg: '#f8f9fa',
+    title: '全程錄影輕鬆複習',
     points: [
-      '每日任務：每天一個小任務，無痛養成你的原子習慣',
-      '每週任務：接近實戰的作業設計，另有真人助教批改並給予實戰回饋',
+      {
+        label: '課後錄影檔提供',
+        text: '每堂課結束後都會提供完整的課程錄影檔，方便你針對不熟悉的片段重複觀看。'
+      },
+      {
+        label: '打破時空限制',
+        text: '無論是想溫故知新，還是當天臨時有事請假，錄影檔讓你學習進度不中斷，隨時隨地都能補課。'
+      },
     ],
   },
   {
-    icon: MessageCircleQuestion,
-    color: '#10b981',
-    bg: '#ecfdf5',
-    title: '助教服務',
+    icon: GraduationCap,
+    color: '#34a853', // Google Green
+    bg: '#f8f9fa',
+    title: '專業顧問陪伴學習',
     points: [
-      '程式卡關抱大腿：提供線上程式助教發問，幫助學習不卡關',
-      '作業批改服務：每週都有課程作業，提交後將獲得批改回饋',
+      {
+        label: '專屬顧問全程協助',
+        text: '學習路上不孤單！我們提供專業顧問老師，針對你上課遇到的任何困難給予即時協助。'
+      },
+      {
+        label: '陪伴式學習體驗',
+        text: '從開課到結業，顧問老師將一路陪伴並追蹤你的學習狀況，確保你遇到的技術或操作難題都能迎刃而解。'
+      },
     ],
   },
 ];
@@ -51,50 +69,92 @@ export default function LearningMethod() {
             在課程中，你會<span style={{ color: '#2563eb' }}>怎麼學習</span>？
           </h2>
           <p className="section-subheading" style={{ marginTop: 16 }}>
-            多元學習方式，讓你從預習到實戰全面覆蓋
+            多元學習方式，讓你從即時互動到課後複習全面覆蓋
           </p>
         </div>
 
         {/* Cards */}
-        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-3 gap-7">
+        <div ref={gridRef} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {methods.map((item, idx) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.title}
                 className={`card fade-up ${gridInView ? 'in-view' : ''} delay-${idx + 1}`}
-                style={{ padding: 36 }}
+                style={{ 
+                  padding: '40px 32px', 
+                  background: item.bg,
+                  borderTop: `5px solid ${item.color}`,
+                  borderRadius: 20,
+                  boxShadow: '0 10px 30px -10px rgba(0,0,0,0.05)',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
               >
                 <div style={{
-                  width: 64, height: 64, borderRadius: 16,
-                  background: item.bg, color: item.color,
+                  width: 56, height: 56, borderRadius: 14,
+                  background: '#fff', color: item.color,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   marginBottom: 28,
+                  boxShadow: '0 8px 16px rgba(0,0,0,0.04)'
                 }}>
-                  <Icon style={{ width: 32, height: 32 }} strokeWidth={1.8} />
+                  <Icon style={{ width: 28, height: 28 }} strokeWidth={2} />
                 </div>
 
-                <h3 style={{ fontSize: 20, fontWeight: 700, color: '#1e293b', marginBottom: 20 }}>
+                <h3 style={{ fontSize: 22, fontWeight: 800, color: '#1e293b', marginBottom: 24 }}>
                   {item.title}
                 </h3>
 
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-                  {item.points.map((pt) => (
-                    <li key={pt} style={{
-                      display: 'flex', alignItems: 'flex-start', gap: 12,
-                      fontSize: 14, color: '#475569', lineHeight: 1.7,
-                    }}>
-                      <span style={{
-                        width: 8, height: 8, borderRadius: '50%',
-                        background: item.color, flexShrink: 0, marginTop: 7,
-                      }} />
-                      <span>{pt}</span>
-                    </li>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+                  {item.points.map((pt, pIdx) => (
+                    <div key={pIdx} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                      <span style={{ 
+                        fontSize: 15, 
+                        fontWeight: 700, 
+                        color: '#334155',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8
+                      }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: item.color }} />
+                        {pt.label}
+                      </span>
+                      <p style={{ 
+                         fontSize: 14, 
+                         color: '#64748b', 
+                         lineHeight: 1.6,
+                         paddingLeft: 14
+                      }}>
+                        {pt.text}
+                      </p>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             );
           })}
+        </div>
+
+        {/* Bottom Reminder */}
+        <div 
+          className={`fade-up ${gridInView ? 'in-view' : ''}`}
+          style={{ 
+            marginTop: 64, 
+            padding: '24px 32px',
+            background: 'rgba(37, 99, 235, 0.05)',
+            borderRadius: 16,
+            border: '1px dashed rgba(37, 99, 235, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 12,
+            transitionDelay: '0.4s'
+          }}
+        >
+          <Lightbulb style={{ color: '#2563eb', flexShrink: 0 }} size={24} />
+          <p style={{ fontSize: 16, color: '#1e3a8a', fontWeight: 600, margin: 0 }}>
+            <span style={{ color: '#2563eb' }}>溫馨提醒：</span> 所有的教學環節都設計為「高互動性」，就是要讓你問到懂、學到會！
+          </p>
         </div>
       </div>
     </section>
